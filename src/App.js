@@ -1,25 +1,63 @@
-import logo from './logo.svg';
 import './App.css';
+import axios from "axios";
+import Board from "./SudokuBoard";
+import KeyBoardEvent from "./KeyBoardEvent"
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+// const PATH_BASE = "http://127.0.0.1:8000/";
+const PATH_BASE = "https://square-games.herokuapp.com/";
+
+class App extends Board {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      level: null,
+      playSquare: null,
+      fullSquare: null,
+    };
+    this.newGame = this.newGame.bind(this);
+    this.initNewGame = this.initNewGame.bind(this);
+    this.getSudoku = this.getSudoku.bind(this);
+    document.addEventListener("keyup",
+            event => KeyBoardEvent(event, this.state.activeCell, this.handleClick, this.setValue)
+    );
+  }
+
+  componentDidMount() {
+    const game = JSON.parse(localStorage.getItem("game"));
+    if (game && game.hasOwnProperty("playSquare")) {
+      this.setState(game);
+      this.initSavedGame();
+    }
+    else {
+      this.newGame("easy");
+    }
+  }
+
+  newGame(level="easy") {
+    localStorage.setItem("saved_data", JSON.stringify({}));
+    this.setState({victory: false});
+    this.getSudoku(level);
+  }
+
+  initNewGame(sudoku_square) {
+    let game = {
+      level: sudoku_square.level,
+      playSquare: sudoku_square.play_square,
+      fullSquare: sudoku_square.full_square,
+    };
+    localStorage.setItem("game", JSON.stringify(game));
+    this.setState(game);
+    this.init(game.playSquare);
+  }
+
+  getSudoku(level) {
+    const url = PATH_BASE + level + "/" ;
+    axios.get(url)
+        .then(res => this.initNewGame(res.data))
+        .catch(err => console.log(err));
+  }
+
 }
 
 export default App;
