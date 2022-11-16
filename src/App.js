@@ -1,63 +1,92 @@
-import './App.css';
-import axios from "axios";
-import Board from "./SudokuBoard";
-import KeyBoardEvent from "./KeyBoardEvent"
+import React from "react";
+import {Routes, Route, Navigate} from "react-router-dom";
 
-// const PATH_BASE = "http://127.0.0.1:8000/";
-const PATH_BASE = "https://square-games.herokuapp.com/";
+import NavBar from "./components/base/NavBar";
+import HomePage from "./components/base/HomePage";
+import StatisticPage from "./components/base/StatisticPage";
+import SudokuApp from "./components/sudoku/SudokuApp";
+import TicTacToeApp from "./components/ticTacToe/TicTacToeApp";
+import {LogIn, SignUp} from "./components/auth/AuthPages";
 
-class App extends Board {
+import SeaBattleApp from "./components/ seaBattle/SeaBattleApp";
+import "./App.css"
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      level: null,
-      playSquare: null,
-      fullSquare: null,
-    };
-    this.newGame = this.newGame.bind(this);
-    this.initNewGame = this.initNewGame.bind(this);
-    this.getSudoku = this.getSudoku.bind(this);
-    document.addEventListener("keyup",
-            event => KeyBoardEvent(event, this.state.activeCell, this.handleClick, this.setValue)
+import {PAGE_LINKS, AUTH_LINKS, back_req} from "./Common";
+
+
+class App extends React.Component{
+    constructor(props) {
+        super(props);
+        this.state = {
+            username: null,
+        }
+    }
+
+    componentDidMount() {
+        let username = localStorage.getItem("username");
+        let token = localStorage.getItem("Authorization");
+        if (token && username) {
+            back_req.defaults.headers.common["Authorization"] = token;
+            this.setState({username: username});
+        }
+    }
+
+    back_request() {
+        return back_req;
+    }
+
+    authenticate(data) {
+        let token = "Token " + data.token;
+        back_req.defaults.headers.common["Authorization"] = token;
+        localStorage.setItem("Authorization", token);
+        localStorage.setItem("username", data.username);
+        this.setState({username: data.username});
+    }
+
+    logOut() {
+        delete back_req.defaults.headers.common["Authorization"];
+        localStorage.removeItem("Authorization");
+        localStorage.removeItem("username");
+        this.setState({username: null});
+    }
+
+
+
+  render() {
+    return(
+        <div>
+
+            <NavBar user={ this.state.username } logout={ () => this.logOut() } />
+
+            <Routes>
+                <Route path={PAGE_LINKS.home} element={<HomePage/>} />
+                <Route path={PAGE_LINKS.statistic}
+                       element={<StatisticPage
+                           user={this.state.username}
+                           back={ () => this.back_request() }
+                       />}
+                />
+                <Route path={PAGE_LINKS.sudoku} element={<SudokuApp user={this.state.username} />} />
+                <Route path={PAGE_LINKS.tic_tac_toe} element={<TicTacToeApp/>} />
+                <Route path={PAGE_LINKS.sea_battle} element={<SeaBattleApp/>} />
+                <Route path={AUTH_LINKS.log_in}
+                       element={<LogIn
+                           auth={ data => this.authenticate(data) }
+                           user={ this.state.username }
+                       />}
+                />
+                <Route path={AUTH_LINKS.sign_up}
+                       element={<SignUp
+                           auth={ data => this.authenticate(data) }
+                           user={ this.state.username }
+                       />}
+                />
+            </Routes>
+
+        </div>
     );
   }
-
-  componentDidMount() {
-    const game = JSON.parse(localStorage.getItem("game"));
-    if (game && game.hasOwnProperty("playSquare")) {
-      this.setState(game);
-      this.initSavedGame();
-    }
-    else {
-      this.newGame("easy");
-    }
-  }
-
-  newGame(level="easy") {
-    localStorage.setItem("saved_data", JSON.stringify({}));
-    this.setState({victory: false});
-    this.getSudoku(level);
-  }
-
-  initNewGame(sudoku_square) {
-    let game = {
-      level: sudoku_square.level,
-      playSquare: sudoku_square.play_square,
-      fullSquare: sudoku_square.full_square,
-    };
-    localStorage.setItem("game", JSON.stringify(game));
-    this.setState(game);
-    this.init(game.playSquare);
-  }
-
-  getSudoku(level) {
-    const url = PATH_BASE + level + "/" ;
-    axios.get(url)
-        .then(res => this.initNewGame(res.data))
-        .catch(err => console.log(err));
-  }
-
 }
+
 
 export default App;

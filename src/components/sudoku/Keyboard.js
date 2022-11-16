@@ -1,5 +1,5 @@
 import React from "react";
-import "./App.css";
+import "./SudokuApp.css";
 
 class Key extends React.Component {
 

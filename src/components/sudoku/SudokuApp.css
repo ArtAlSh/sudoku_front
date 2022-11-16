@@ -1,0 +1,43 @@
+.square {
+  height: 440px;
+  width: 440px;
+  font-size: calc(1.275rem + 0.3vw) !important;
+  border: black solid 3px;
+  /*margin-left: auto;*/
+  /*margin-right: auto;*/
+}
+
+.cell {
+  width: 11.111111%;
+  height: 11.111111%;
+}
+
+.border-right-bold {
+  border-right: black solid 3px;
+}
+
+.border-right-thin {
+  border-right: black solid 1px;
+}
+
+.border-bottom-bold {
+  border-bottom: black solid 3px !important;
+}
+
+.border-bottom-thin {
+  border-bottom: black solid 1px !important;
+}
+
+.square_width {
+  width: 440px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.activeCells {
+  background-color: var(--bs-gray-300) !important;
+}
+
+.activeCell {
+  background-color: var(--bs-gray-400) !important;
+}

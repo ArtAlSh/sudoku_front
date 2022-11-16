@@ -1,8 +1,11 @@
+
 import React from "react";
 import Keyboard from "./Keyboard";
 import InfoMenu from "./InfoMenu";
 import Conflicts from "./CheckValues";
-import "./App.css";
+import {back_req, SUDOKU_LINKS} from "../../Common";
+import "./SudokuApp.css";
+import data from "bootstrap/js/src/dom/data";
 
 
 function Square(props) {
@@ -91,8 +94,16 @@ class BaseBoard extends React.Component {
                 return false;
             }
         }
+        // Send statistic
+        if (this.props.user) {
+            let data = {
+                "is_winn": true,
+                "add_new": !this.props.statistic,
+            };
+            back_req.put(SUDOKU_LINKS.base, data);
+        }
         localStorage.setItem("saved_data", JSON.stringify({}));
-        localStorage.setItem("game", JSON.stringify({}))
+        localStorage.setItem("game", JSON.stringify({}));
         this.setState({ victory: true });
         return true;
     }
