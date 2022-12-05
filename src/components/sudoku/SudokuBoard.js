@@ -30,7 +30,7 @@ class BaseBoard extends React.Component {
                 changeable: true,
                 conflict: false,
             }),
-        }
+        };
         this.init = this.init.bind(this);
         this.initSavedGame = this.initSavedGame.bind(this);
         this.setValue = this.setValue.bind(this);

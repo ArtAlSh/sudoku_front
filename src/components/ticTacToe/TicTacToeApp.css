@@ -1,0 +1,11 @@
+.cell_tictactoe {
+  width: 33%;
+  height: 33%;
+}
+
+.board_tictactoe {
+  height: 350px;
+  width: 350px;
+  font-size: calc(1.275rem + 0.3vw) !important;
+  margin: auto;
+}
