@@ -8,6 +8,8 @@ import './index.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/js/dist/dropdown';
 import 'bootstrap/js/dist/button';
+import 'bootstrap/js/src/dropdown';
+import 'bootstrap/js/src/button';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

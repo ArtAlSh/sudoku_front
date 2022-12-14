@@ -1,7 +1,7 @@
 {
   "name": "sudoku",
   "version": "0.1.0",
-  "homepage": "https://artalsh.github.io/sudoku_front/",
+  "homepage": "sudokufront-production.up.railway.app",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",
@@ -42,5 +42,17 @@
   },
   "devDependencies": {
     "gh-pages": "^4.0.0"
+  },
+  "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://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@github.com/ArtAlSh/sudoku_front.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ArtAlSh/sudoku_front/issues"
   }
 }
