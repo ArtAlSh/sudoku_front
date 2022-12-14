@@ -1,7 +1,7 @@
 import axios from "axios";
 
 
-const HOME_LINK = "/";
+const HOME_LINK = "";
 // const BACK_URL = "http://127.0.0.1:8000/";
 // const BACK_URL = "http://localhost:8000/";
 const BACK_URL = "https://games-production-7379.up.railway.app/";
